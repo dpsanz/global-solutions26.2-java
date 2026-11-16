@@ -3,6 +3,7 @@
 ## Integrantes
 
 | Nome | RM |
+| --- | --- |
 | Daniel Sanchez | 561948 |
 | Mateus Duarte | 563662 |
 | Guilherme Sasso | 563519 |
