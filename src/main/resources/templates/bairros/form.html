@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de bairro</title>
+</head>
+<body>
+<main>
+    <h1 th:text="${bairro.id == null ? 'Novo bairro' : 'Editar bairro'}"></h1>
+
+    <form method="post" th:action="@{/bairros/salvar}" th:object="${bairro}">
+        <input type="hidden" th:field="*{id}">
+        <p role="alert" th:each="erro : ${#fields.globalErrors()}" th:text="${erro}"></p>
+
+        <p>
+            <label for="nome">Nome</label>
+            <input type="text" th:field="*{nome}">
+            <span role="alert" th:errors="*{nome}"></span>
+        </p>
+
+        <p>
+            <label for="zona">Zona</label>
+            <select th:field="*{zona}">
+                <option value="">Selecione</option>
+                <option th:each="zona : ${zonas}" th:value="${zona}" th:text="${zona}"></option>
+            </select>
+            <span role="alert" th:errors="*{zona}"></span>
+        </p>
+
+        <p>
+            <label for="areaKm2">Área (km²)</label>
+            <input type="number" step="any" th:field="*{areaKm2}">
+            <span role="alert" th:errors="*{areaKm2}"></span>
+        </p>
+
+        <button type="submit">Salvar</button>
+        <a th:href="@{/bairros}">Cancelar</a>
+    </form>
+</main>
+</body>
+</html>

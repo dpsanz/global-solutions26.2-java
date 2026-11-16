@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bairros</title>
+</head>
+<body>
+<main>
+    <h1>Bairros</h1>
+    <a th:href="@{/bairros/novo}">Novo bairro</a>
+    <p role="status" th:if="${sucesso}" th:text="${sucesso}"></p>
+    <p role="alert" th:if="${erro}" th:text="${erro}"></p>
+
+    <table>
+        <thead>
+        <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">Zona</th>
+            <th scope="col">Área (km²)</th>
+            <th scope="col">Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="bairro : ${bairros}">
+            <td th:text="${bairro.nome}"></td>
+            <td th:text="${bairro.zona}"></td>
+            <td th:text="${bairro.areaKm2}"></td>
+            <td>
+                <a th:href="@{/bairros/{id}/editar(id=${bairro.id})}">Editar</a>
+                <a th:href="@{/bairros/{id}/painel(id=${bairro.id})}">Painel</a>
+                <form method="post" th:action="@{/bairros/{id}/excluir(id=${bairro.id})}">
+                    <button type="submit">Excluir</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(bairros)}">
+            <td colspan="4">Nenhum bairro cadastrado.</td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+</body>
+</html>
