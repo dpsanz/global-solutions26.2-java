@@ -2,39 +2,53 @@
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastro de bairro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cadastro de bairro | Cidade em Dia de Chuva</title>
+    <link rel="stylesheet" th:href="@{/css/tema.css}">
 </head>
 <body>
+<header>
+    <nav aria-label="Navegação principal">
+        <strong>Cidade em Dia de Chuva</strong>
+        <a th:href="@{/bairros}" aria-current="location">Bairros</a>
+        <a th:href="@{/trechos}">Trechos</a>
+        <a th:href="@{/leituras}">Leituras</a>
+    </nav>
+</header>
 <main>
+    <a class="back" th:href="@{/bairros}">← Voltar aos bairros</a>
     <h1 th:text="${bairro.id == null ? 'Novo bairro' : 'Editar bairro'}"></h1>
 
-    <form method="post" th:action="@{/bairros/salvar}" th:object="${bairro}">
+    <form class="form-card" method="post" th:action="@{/bairros/salvar}" th:object="${bairro}">
         <input type="hidden" th:field="*{id}">
-        <p role="alert" th:each="erro : ${#fields.globalErrors()}" th:text="${erro}"></p>
+        <p class="notice error" role="alert"
+           th:each="erro : ${#fields.globalErrors()}" th:text="${erro}"></p>
 
-        <p>
+        <div class="field">
             <label for="nome">Nome</label>
-            <input type="text" th:field="*{nome}">
-            <span role="alert" th:errors="*{nome}"></span>
-        </p>
+            <input id="nome" type="text" th:field="*{nome}">
+            <span class="error" role="alert" th:errors="*{nome}"></span>
+        </div>
 
-        <p>
+        <div class="field">
             <label for="zona">Zona</label>
-            <select th:field="*{zona}">
+            <select id="zona" th:field="*{zona}">
                 <option value="">Selecione</option>
                 <option th:each="zona : ${zonas}" th:value="${zona}" th:text="${zona}"></option>
             </select>
-            <span role="alert" th:errors="*{zona}"></span>
-        </p>
+            <span class="error" role="alert" th:errors="*{zona}"></span>
+        </div>
 
-        <p>
+        <div class="field">
             <label for="areaKm2">Área (km²)</label>
-            <input type="number" step="any" th:field="*{areaKm2}">
-            <span role="alert" th:errors="*{areaKm2}"></span>
-        </p>
+            <input id="areaKm2" type="number" step="any" th:field="*{areaKm2}">
+            <span class="error" role="alert" th:errors="*{areaKm2}"></span>
+        </div>
 
-        <button type="submit">Salvar</button>
-        <a th:href="@{/bairros}">Cancelar</a>
+        <div class="form-actions">
+            <button class="primary" type="submit">Salvar</button>
+            <a class="button" th:href="@{/bairros}">Cancelar</a>
+        </div>
     </form>
 </main>
 </body>

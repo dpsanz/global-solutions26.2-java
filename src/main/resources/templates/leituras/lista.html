@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Leituras | Cidade em Dia de Chuva</title>
+    <link rel="stylesheet" th:href="@{/css/tema.css}">
+</head>
+<body>
+<header>
+    <nav aria-label="Navegação principal">
+        <strong>Cidade em Dia de Chuva</strong>
+        <a th:href="@{/bairros}">Bairros</a>
+        <a th:href="@{/trechos}">Trechos</a>
+        <a th:href="@{/leituras}" aria-current="page">Leituras</a>
+    </nav>
+</header>
+<main>
+    <div class="page-heading">
+        <h1 id="titulo">Leituras</h1>
+        <a class="button primary" th:href="@{/leituras/novo}">Nova leitura</a>
+    </div>
+    <p class="notice ok" role="status" th:if="${sucesso}" th:text="${sucesso}"></p>
+    <p class="notice error" role="alert" th:if="${erro}" th:text="${erro}"></p>
+
+    <div class="table-wrap" role="region" aria-labelledby="titulo" tabindex="0">
+        <table aria-labelledby="titulo">
+            <thead>
+            <tr><th>Trecho</th><th>Data e hora</th><th>Lâmina (cm)</th><th>Status</th><th>Ações</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="leitura : ${leituras}">
+                <th scope="row" th:text="${leitura.trechoDescricao}"></th>
+                <td th:text="${#temporals.format(leitura.dataHora, 'dd/MM/yyyy HH:mm')}"></td>
+                <td th:text="${leitura.laminaCm}"></td>
+                <td th:switch="${leitura.status}">
+                    <span class="status normal" th:case="'NORMAL'">Normal</span>
+                    <span class="status atencao" th:case="'ATENCAO'">Atenção</span>
+                    <span class="status alerta" th:case="'ALERTA'">Alerta</span>
+                </td>
+                <td>
+                    <div class="actions">
+                        <a class="button" th:href="@{/leituras/{id}/editar(id=${leitura.id})}">Editar</a>
+                        <form method="post" th:action="@{/leituras/{id}/excluir(id=${leitura.id})}">
+                            <button class="danger" type="submit">Excluir</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(leituras)}">
+                <td class="empty" colspan="5">Nenhuma leitura cadastrada.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

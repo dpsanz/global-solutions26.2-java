@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cadastro de trecho | Cidade em Dia de Chuva</title>
+    <link rel="stylesheet" th:href="@{/css/tema.css}">
+</head>
+<body>
+<header>
+    <nav aria-label="Navegação principal">
+        <strong>Cidade em Dia de Chuva</strong>
+        <a th:href="@{/bairros}">Bairros</a>
+        <a th:href="@{/trechos}" aria-current="location">Trechos</a>
+        <a th:href="@{/leituras}">Leituras</a>
+    </nav>
+</header>
+<main>
+    <a class="back" th:href="@{/trechos}">← Voltar aos trechos</a>
+    <h1 th:text="${trecho.id == null ? 'Novo trecho' : 'Editar trecho'}"></h1>
+
+    <form class="form-card" method="post" th:action="@{/trechos/salvar}" th:object="${trecho}">
+        <input type="hidden" th:field="*{id}">
+        <p class="notice error" role="alert"
+           th:each="erro : ${#fields.globalErrors()}" th:text="${erro}"></p>
+        <p class="notice" th:if="${#lists.isEmpty(bairros)}">
+            <a class="back" th:href="@{/bairros/novo}">Cadastre um bairro para criar um trecho.</a>
+        </p>
+
+        <div class="field">
+            <label for="logradouro">Logradouro</label>
+            <input id="logradouro" type="text" th:field="*{logradouro}">
+            <span class="error" role="alert" th:errors="*{logradouro}"></span>
+        </div>
+
+        <div class="field">
+            <label for="tipoCalcada">Tipo de calçada</label>
+            <select id="tipoCalcada" th:field="*{tipoCalcada}">
+                <option value="">Selecione</option>
+                <option th:each="tipo : ${tiposCalcada}" th:value="${tipo}" th:text="${tipo}"></option>
+            </select>
+            <span class="error" role="alert" th:errors="*{tipoCalcada}"></span>
+        </div>
+
+        <div class="field">
+            <label for="altitude">Altitude (m)</label>
+            <input id="altitude" type="number" th:field="*{altitude}">
+            <span class="error" role="alert" th:errors="*{altitude}"></span>
+        </div>
+
+        <div class="field">
+            <label for="bairroId">Bairro</label>
+            <select id="bairroId" th:field="*{bairroId}">
+                <option value="">Selecione</option>
+                <option th:each="bairro : ${bairros}" th:value="${bairro.id}" th:text="${bairro.nome}"></option>
+            </select>
+            <span class="error" role="alert" th:errors="*{bairroId}"></span>
+        </div>
+
+        <div class="form-actions">
+            <button class="primary" type="submit" th:disabled="${#lists.isEmpty(bairros)}">Salvar</button>
+            <a class="button" th:href="@{/trechos}">Cancelar</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

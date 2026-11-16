@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cadastro de leitura | Cidade em Dia de Chuva</title>
+    <link rel="stylesheet" th:href="@{/css/tema.css}">
+</head>
+<body>
+<header>
+    <nav aria-label="Navegação principal">
+        <strong>Cidade em Dia de Chuva</strong>
+        <a th:href="@{/bairros}">Bairros</a>
+        <a th:href="@{/trechos}">Trechos</a>
+        <a th:href="@{/leituras}" aria-current="location">Leituras</a>
+    </nav>
+</header>
+<main>
+    <a class="back" th:href="@{/leituras}">← Voltar às leituras</a>
+    <h1 th:text="${leitura.id == null ? 'Nova leitura' : 'Editar leitura'}"></h1>
+
+    <form class="form-card" method="post" th:action="@{/leituras/salvar}" th:object="${leitura}">
+        <input type="hidden" th:field="*{id}">
+        <p class="notice error" role="alert"
+           th:each="erro : ${#fields.globalErrors()}" th:text="${erro}"></p>
+        <p class="notice" th:if="${#lists.isEmpty(trechos)}">
+            <a class="back" th:href="@{/trechos/novo}">Cadastre um trecho para registrar uma leitura.</a>
+        </p>
+
+        <div class="field">
+            <label for="trechoId">Trecho</label>
+            <select id="trechoId" th:field="*{trechoId}">
+                <option value="">Selecione</option>
+                <option th:each="trecho : ${trechos}" th:value="${trecho.id}"
+                        th:text="${trecho.logradouro + ' (' + trecho.bairroNome + ')'}"></option>
+            </select>
+            <span class="error" role="alert" th:errors="*{trechoId}"></span>
+        </div>
+
+        <div class="field">
+            <label for="dataHora">Data e hora</label>
+            <input id="dataHora" type="datetime-local" step="1" th:field="*{dataHora}">
+            <span class="error" role="alert" th:errors="*{dataHora}"></span>
+        </div>
+
+        <div class="field">
+            <label for="laminaCm">Lâmina (cm)</label>
+            <input id="laminaCm" type="number" th:field="*{laminaCm}">
+            <span class="error" role="alert" th:errors="*{laminaCm}"></span>
+        </div>
+
+        <div class="form-actions">
+            <button class="primary" type="submit" th:disabled="${#lists.isEmpty(trechos)}">Salvar</button>
+            <a class="button" th:href="@{/leituras}">Cancelar</a>
+        </div>
+    </form>
+</main>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Trechos | Cidade em Dia de Chuva</title>
+    <link rel="stylesheet" th:href="@{/css/tema.css}">
+</head>
+<body>
+<header>
+    <nav aria-label="Navegação principal">
+        <strong>Cidade em Dia de Chuva</strong>
+        <a th:href="@{/bairros}">Bairros</a>
+        <a th:href="@{/trechos}" aria-current="page">Trechos</a>
+        <a th:href="@{/leituras}">Leituras</a>
+    </nav>
+</header>
+<main>
+    <div class="page-heading">
+        <h1 id="titulo">Trechos</h1>
+        <a class="button primary" th:href="@{/trechos/novo}">Novo trecho</a>
+    </div>
+    <p class="notice ok" role="status" th:if="${sucesso}" th:text="${sucesso}"></p>
+    <p class="notice error" role="alert" th:if="${erro}" th:text="${erro}"></p>
+
+    <div class="table-wrap" role="region" aria-labelledby="titulo" tabindex="0">
+        <table aria-labelledby="titulo">
+            <thead>
+            <tr><th>Logradouro</th><th>Tipo de calçada</th><th>Altitude (m)</th><th>Bairro</th><th>Ações</th></tr>
+            </thead>
+            <tbody>
+            <tr th:each="trecho : ${trechos}">
+                <th scope="row" th:text="${trecho.logradouro}"></th>
+                <td th:text="${trecho.tipoCalcada}"></td>
+                <td th:text="${trecho.altitude}"></td>
+                <td th:text="${trecho.bairroNome}"></td>
+                <td>
+                    <div class="actions">
+                        <a class="button" th:href="@{/trechos/{id}/editar(id=${trecho.id})}">Editar</a>
+                        <form method="post" th:action="@{/trechos/{id}/excluir(id=${trecho.id})}">
+                            <button class="danger" type="submit">Excluir</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(trechos)}">
+                <td class="empty" colspan="5">Nenhum trecho cadastrado.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>
